@@ -60,6 +60,11 @@ class Battle(Game):
         lst_tty = list(zip(dist_packs, self.players))
         list(map(CardPlayer.give_cards, lst_tty))
 
+    @staticmethod
+    def rules():
+        """Define the rules for Battle"""
+        pass
+
 if __name__ == "__main__":
     print("Game test")
     # define 3 players for test
