@@ -22,7 +22,7 @@ class Game(metaclass=abc.ABCMeta):
         if len(self.cards_set.cards) < number_by_user * self.number_of_players:
             raise Exception("So more players for number of cards")
 
-    #@abc.abstractmethod
+    @abc.abstractmethod
     def distribute(self, number_by_user=-1):
         # distribution of cards
         # if -1 cards divide package and distribute all
@@ -30,12 +30,8 @@ class Game(metaclass=abc.ABCMeta):
         
         # random shuffle
         self.cards_set.shuffle_it()
-        # divide by number of players if number_by_user is not defined
+        
 
-        # distribute
-        dist_packs = [self.cards_set.cards[i::self.number_of_players] for i in range(self.number_of_players)]
-        lst_tty = list(zip(dist_packs, self.players))
-        list(map(CardPlayer.give_cards, lst_tty))
 
 class TarotGame(Game):
     """Define Tarot game"""
@@ -54,6 +50,15 @@ class Battle(Game):
         self.cards_set = CardsSet(TypeCard.C_54)
         self.players = players
         self.distribute()
+
+    def distribute(self):
+        super().distribute(len(self.players))
+        
+        # divide by number of players if number_by_user is not defined
+        # distribute
+        dist_packs = [self.cards_set.cards[i::self.number_of_players] for i in range(self.number_of_players)]
+        lst_tty = list(zip(dist_packs, self.players))
+        list(map(CardPlayer.give_cards, lst_tty))
 
 if __name__ == "__main__":
     print("Game test")
