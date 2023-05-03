@@ -15,18 +15,26 @@ class CardPlayer(object):
     def play_next(self):
         pass
     
-    def get_cards(self, cards: list[Card]):
+    def get_cards(self, cards: list[Card]) -> None:
         self._cards = cards
 
     @property
-    def cards(self):
+    def cards(self) -> list:
         return self._cards
+
+    @property
+    def number_of_cards(self):
+        return len(self.cards)
 
     def __str__(self):
         str_cards = ", ".join([str(elem) for elem in self.cards])
         return f"""I'm {self.name} and here is my game:\n[{str_cards}]"""
 
     @staticmethod
-    def give_cards(elem: tuple):
+    def give_cards(elem: tuple) -> None:
         cards, player = elem
         player.get_cards(cards)
+
+    @staticmethod
+    def has_no_card(player) -> bool:
+        return not(player.number_of_cards)

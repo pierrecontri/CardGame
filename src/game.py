@@ -30,8 +30,16 @@ class Game(metaclass=abc.ABCMeta):
         
         # random shuffle
         self.cards_set.shuffle_it()
-        
 
+    def __next__(self):
+        # stop game if one of player has no card
+        if any(map(CardPlayer.has_no_card, players)):
+            raise StopIteration
+        self.next_round()
+
+    @abc.abstractmethod
+    def next_round(self):
+        pass
 
 class TarotGame(Game):
     """Define Tarot game"""
@@ -65,6 +73,10 @@ class Battle(Game):
         """Define the rules for Battle"""
         pass
 
+    def next_round():
+        print("Play")
+        list(map(lambda pl: pl.play_next(), self.players))
+
 if __name__ == "__main__":
     print("Game test")
     # define 3 players for test
@@ -73,3 +85,4 @@ if __name__ == "__main__":
     battle = Battle(players[0:2])
     for player in players:
         print(player)
+    print(any(map(CardPlayer.has_no_card, players)))
