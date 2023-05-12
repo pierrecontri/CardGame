@@ -16,9 +16,10 @@ class Game(metaclass=abc.ABCMeta):
     cards_set: CardsSet
 
     def __init__(self, type_of_game:TypeCard, players:list, cards_pack_count:int=1):
+        
         self.cards_set = CardsSet(type_card = type_of_game, cards_pack_count = cards_pack_count)
         self.players = players
-        list(map(lambda x: x.define_game("tot"), self.players))
+        list(map(CardPlayer.define_game(game_type=type(self).__name__), self.players))
         self.distribute()
         
     @property
@@ -45,7 +46,6 @@ class Game(metaclass=abc.ABCMeta):
         if len(self.cards_set.cards) < number_by_user * self.number_of_players:
             raise Exception("So more players for number of cards")
 
-    @abc.abstractmethod
     def distribute(self, number_by_user=-1):
         """Distribution of cards
 
@@ -94,9 +94,6 @@ class TarotGame(Game):
 
 class Battle(Game):
 
-    def distribute(self):
-        super().distribute()
-
     @staticmethod
     def rules():
         """Define the rules for Battle"""
@@ -109,7 +106,7 @@ class Battle(Game):
         pass
 
     def next_round(self):
-        # check minimu 2 players got cards
+        # check minimum 2 players got cards
         print(sum(map(CardPlayer.has_no_card, self.players)))
         print("Play")
         list(map(lambda pl: pl.play_next(), self.players))

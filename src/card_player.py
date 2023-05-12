@@ -10,9 +10,9 @@ class CardPlayer(object):
         self.name = name
         self._game_type = game_type
         if game_type:
-            self.define_game(game_type)
+            self._define_game(game_type)
 
-    def define_game(self, game_type):
+    def _define_game(self, game_type):
         self._game_type = game_type
 
     def play_next(self):
@@ -45,3 +45,8 @@ class CardPlayer(object):
     @staticmethod
     def has_card(player) -> bool:
         return not(player.number_of_cards)
+
+    def define_game(game_type):
+        def define_it(player):
+            player._define_game(game_type)
+        return define_it
