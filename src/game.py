@@ -16,9 +16,9 @@ class Game(metaclass=abc.ABCMeta):
     cards_set: CardsSet
 
     def __init__(self, type_of_game:TypeCard, players:list, cards_pack_count:int=1):
-        
-        self.cards_set = CardsSet(type_card = type_of_game, cards_pack_count = cards_pack_count)
+
         self.players = players
+        self.cards_set = CardsSet(type_card = type_of_game, cards_pack_count = cards_pack_count)
         list(map(CardPlayer.define_game(game_type=type(self).__name__), self.players))
         self.distribute()
         
@@ -75,27 +75,42 @@ class Game(metaclass=abc.ABCMeta):
     def next_round(self):
         pass
 
-    @abc.abstractstaticmethod
+    @classmethod
     def rules(cls):
-        pass
+        raise Exception(f"Please, define rules for {cls.__name__} game")
 
-class TarotGame(Game):
+class Tarot(Game):
     """Define Tarot game"""
-    def __init__(self):
-        pass
+    def __init__(self, players:list):
+        super().__init__(type_of_game = TypeCard.TAROT, players = players)
 
-    def __setattr__():
-        """Check number of players in game, ..."""
+    def _check_distribution(self, number_by_user):
+        """
+        Redefine the check distribution for Tarot:
+        just need between 3 and 5 players
+        """
+        print(f"number of players : {self.number_of_players}")
+        if not(2 < self.number_of_players < 6):
+            raise Exception(f"Not attends numbers of players")		
+
+    def distribute(self, number_by_user:int=-1):
+        """
+        Distribution has to take 2 rounds:
+          - first round, before announce
+          - second round after taking announce decision
+        """
         pass
 
     def rules(cls):
         pass
 
+    def next_round(self):
+        pass
 
 class Battle(Game):
 
-    @staticmethod
-    def rules():
+    @classmethod
+    def rules(cls):
         """Define the rules for Battle"""
         pass
 
@@ -126,8 +141,8 @@ class Pocker(Game):
     def distribute(self):
         super().distribute(Pocker.number_cards_in_hands)
         
-    @staticmethod
-    def rules():
+    @classmethod
+    def rules(cls):
         """Define the rules for Pocker"""
         pass
 
@@ -138,7 +153,7 @@ if __name__ == "__main__":
     print("Game test")
     # define 3 players for test
     # create a battle game for test
-    players = [CardPlayer(f"Player {i}") for i in range(1, 37)]
+    players = [CardPlayer(f"Player {i}") for i in range(1, 41)]
 
     # battle part 2 persons with 54 cards
     battle_2p_54c = Battle(TypeCard.C_54, players[0:2])
@@ -155,14 +170,20 @@ if __name__ == "__main__":
 
 
     # pocker 3 persons with 1 pack
-    pocker_3p_1p = Pocker(players[17:20], cards_pack_count = 1)
+    pocker_3p_1p = Pocker(players[16:20], cards_pack_count = 1)
 
     # pocker 15 persons with 2 packs // Exception
     # pocker_15p_2p = Pocker(players[20:35], cards_pack_count = 1)
 
     # pocker 15 persons with 8 packs // Exception
-    pocker_15p_8p = Pocker(players[20:35], cards_pack_count = 8)
+    pocker_10p_4p = Pocker(players[20:30], cards_pack_count = 4)
+
+    # Tarot 6 persons // Exception
+    tarot_6p = Tarot(players[30:37])
 
     # tests
     for player in players:
         print(player)
+
+    Battle.rules()
+    

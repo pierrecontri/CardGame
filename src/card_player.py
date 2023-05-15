@@ -31,22 +31,23 @@ class CardPlayer(object):
 
     def __str__(self):
         str_cards = ", ".join([str(elem) for elem in self.cards])
-        return f"""I'm {self.name}, I play {self._game_type} and here is my game:\n[{str_cards}]"""
+        return f"""I'm {self.name}, I play {self._game_type} and here is my game: [{str_cards}]"""
 
-    @staticmethod
-    def give_cards(elem: tuple) -> None:
+    @classmethod
+    def give_cards(cls, elem: tuple) -> None:
         cards, player = elem
         player.get_cards(cards)
 
-    @staticmethod
-    def has_no_card(player) -> bool:
+    @classmethod
+    def has_no_card(cls, player) -> bool:
         return not(player.number_of_cards)
     
     @staticmethod
     def has_card(player) -> bool:
         return not(player.number_of_cards)
 
-    def define_game(game_type):
+    @classmethod
+    def define_game(cls, game_type):
         def define_it(player):
             player._define_game(game_type)
         return define_it

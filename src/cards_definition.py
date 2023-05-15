@@ -42,7 +42,6 @@ class CardsSet(object):
         self._elements = list(itertools.product(self._colors, self._values))
         self._cards = [Card(*elem) for elem in self._elements] * cards_pack_count
 
-        print(self.cards)
         # random shuffle
         if shuffle_cards:
             self.shuffle_it()
@@ -63,6 +62,9 @@ class CardsSet(object):
     @property
     def cards(self):
         return self._cards
+
+    def __len__(self):
+        return len(self.cards)
 
     @property
     def trumps(self):
