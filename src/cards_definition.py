@@ -23,6 +23,22 @@ class Card:
     def __str__(self):
         return f"{self.value}{self.color}"
 
+class CardSetPlayer(list):
+    """This class is the representation of a card set for each gamer"""
+
+    def __init__(self, cards=[], game_type=None):
+        super().__init__(cards)
+        self._game_type = game_type
+
+    @property
+    def game_type(self):
+        return self._game_type
+    
+    @game_type.setter
+    def game_type(self, game_type):
+        if game_type != None:
+            self._game_type = game_type
+    
 class CardsSet(object):
     """This class is the representation of a clomplete card game.
     By default, there is 32 card, but yes can change it to 54 or Taro game"""
@@ -39,8 +55,8 @@ class CardsSet(object):
         self._colors = list(chr(col) for col in range(3, 7, 1))
         self._values = CardsSet.dict_type_card[self._type_card]
         self._trumps = None if self._type_card != TypeCard.TAROT else list(range(1, 21, 1)) # 21 trumps
-        self._elements = list(itertools.product(self._colors, self._values))
-        self._cards = [Card(*elem) for elem in self._elements] * cards_pack_count
+        elements = itertools.product(self._colors, self._values)
+        self._cards = [Card(*elem) for elem in elements] * cards_pack_count
 
         # random shuffle
         if shuffle_cards:
@@ -77,6 +93,7 @@ class CardsSet(object):
     def switch_trumps(self, color):
         """move actual trumps in cards and define another one"""
         pass
+
 
 if __name__ == "__main__":
     game = CardsSet(TypeCard.C_32)

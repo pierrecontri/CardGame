@@ -19,7 +19,6 @@ class Game(metaclass=abc.ABCMeta):
 
         self.players = players
         self.cards_set = CardsSet(type_card = type_of_game, cards_pack_count = cards_pack_count)
-        list(map(CardPlayer.define_game(game_type=type(self).__name__), self.players))
         self.distribute()
         
     @property
@@ -61,7 +60,7 @@ class Game(metaclass=abc.ABCMeta):
             number_by_user = len(self.cards_set.cards) // self.number_of_players
 
         for pl in self.players:
-            pl.get_cards([self.cards_set.cards.pop() for _ in range(number_by_user)])
+            pl.get_cards(CardSetPlayer(cards = [self.cards_set.cards.pop() for _ in range(number_by_user)], game_type = type(self).__name__))
 
         return
     
@@ -168,7 +167,6 @@ if __name__ == "__main__":
     # battle part 8 persons with 32 cards
     battle_8p_32c = Battle(TypeCard.C_32, players[8:16])
 
-
     # pocker 3 persons with 1 pack
     pocker_3p_1p = Pocker(players[16:20], cards_pack_count = 1)
 
@@ -179,7 +177,10 @@ if __name__ == "__main__":
     pocker_10p_4p = Pocker(players[20:30], cards_pack_count = 4)
 
     # Tarot 6 persons // Exception
-    tarot_6p = Tarot(players[30:37])
+    #tarot_6p = Tarot(players[30:36])
+
+    # Tarot 5 persons
+    tarot_5p = Tarot(players[30:35])
 
     # tests
     for player in players:
