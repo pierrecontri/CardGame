@@ -19,6 +19,9 @@ class CardPlayer(object):
 
     def play_next(self):
         pass
+
+    def play_round(self):
+        pass
     
     def get_cards(self, cards: CardSetPlayer) -> None:
         self._cards = cards

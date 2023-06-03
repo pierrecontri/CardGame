@@ -43,7 +43,7 @@ class CardsSet(object):
     """This class is the representation of a clomplete card game.
     By default, there is 32 card, but yes can change it to 54 or Taro game"""
 
-    dict_type_card = {
+    dict_values_card = {
         TypeCard.C_32: ["A", "K", "Q", "V", "10", "9", "8", "7"],
         TypeCard.C_54: ["K", "Q", "V", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"],
         TypeCard.TAROT: ["K", "Q", "C", "V", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"]
@@ -53,12 +53,11 @@ class CardsSet(object):
 
         self._type_card = type_card
         self._colors = list(chr(col) for col in range(3, 7, 1))
-        self._values = CardsSet.dict_type_card[self._type_card]
+        self._values = CardsSet.dict_values_card[self._type_card]
         self._trumps = None if self._type_card != TypeCard.TAROT else list(range(1, 21, 1)) # 21 trumps
         elements = itertools.product(self._colors, self._values)
         self._cards = [Card(*elem) for elem in elements] * cards_pack_count
 
-        # random shuffle
         if shuffle_cards:
             self.shuffle_it()
 
