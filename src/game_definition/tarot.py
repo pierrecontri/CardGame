@@ -32,3 +32,5 @@ class Tarot(base.Game):
     def next_round(self, raise_stop_function=None):
         pass
 
+    def has_next_round(self):
+        pass

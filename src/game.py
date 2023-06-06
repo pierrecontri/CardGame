@@ -25,6 +25,11 @@ if __name__ == "__main__":
     # battle part 2 persons with 54 cards
     battle_2p_54c = Battle(TypeCard.C_54, players[0:2])
     next(battle_2p_54c)
+    next(battle_2p_54c)
+    next(battle_2p_54c)
+    for _ in range(3000):
+        next(battle_2p_54c)
+    next(battle_2p_54c)
 
     # battle part 3 persons with 54 cards
     battle_3p_54c = Battle(TypeCard.C_54, players[2:5])
@@ -51,8 +56,6 @@ if __name__ == "__main__":
     tarot_5p = Tarot(players[30:35])
 
     # tests
-    for player in players:
+    for player in players[0:2]:
         print(player)
 
-    Battle.rules()
-    

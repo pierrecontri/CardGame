@@ -22,6 +22,27 @@ class Card:
 
     def __str__(self):
         return f"{self.value}{self.color}"
+        
+    def __cmp__(self, other):
+        return self.value.__cmp__(other.value)
+    
+    def __lt__(self, other):
+        return self.value < other.value
+
+    def __le__(self, other):
+        return self.value <= other.value
+
+    def __eq__(self, other):
+        return self.value == other.value
+
+    def __ne__(self, other):
+        return self.value != other.value
+
+    def __gt__(self, other):
+        return self.value > other.value
+
+    def __ge__(self, other):
+        return self.value >= other.value
 
 class CardSetPlayer(list):
     """This class is the representation of a card set for each gamer"""

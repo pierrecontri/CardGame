@@ -22,9 +22,20 @@ class Battle(base.Game):
         pass
 
     def next_round(self, raise_stop_function=None):
-        # check minimum 2 players got cards
-        print(battle_rules.has_next_round(self.players))
         print("Play")
-        list(map(lambda pl: pl.play_next(), self.players))
+        cards_round = battle_rules.play_round(players = self.players, is_blindly = True)
 
+    def has_next_round(self):
+        return battle_rules.has_next_round(self.players)
 
+    def start_game(self):
+        raise NotImplemented
+
+    def end_game(self):
+        raise NotImplemented
+
+    def start_round(self):
+        raise NotImplemented
+
+    def end_round(self):
+        raise NotImplemented

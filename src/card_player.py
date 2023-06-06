@@ -23,8 +23,8 @@ class CardPlayer(object):
     def play_round(self):
         pass
     
-    def get_cards(self, cards: CardSetPlayer) -> None:
-        self._cards = cards
+    def get_cards(self, cards: list) -> None:
+        self._cards += cards
 
     @property
     def cards(self) -> list:
@@ -51,7 +51,7 @@ class CardPlayer(object):
     
     @staticmethod
     def has_card(player) -> bool:
-        return not(player.number_of_cards)
+        return bool(player.number_of_cards)
 
     @classmethod
     def define_game(cls, game_type):

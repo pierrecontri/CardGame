@@ -14,6 +14,7 @@ class Pocker(base.Game):
     
     def __init__(self, players: list, cards_pack_count: int=1):
         super().__init__(TypeCard.C_32, players, cards_pack_count)
+        self.round_number = 0
     
     def distribute(self):
         super().distribute(Pocker.number_cards_in_hands)
@@ -24,5 +25,8 @@ class Pocker(base.Game):
         pass
 
     def next_round(self):
-        pass
+        self.round_number += 1
+
+    def has_next_round(self):
+        return self.round_number < 2
 
