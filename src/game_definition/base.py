@@ -4,12 +4,12 @@ from card_player import CardPlayer
 from cards_definition import CardsSet, CardSetPlayer, TypeCard
 
 class StateGame(IntEnum):
-    INIT = 0
-    DISTRIBUTION = 1
-    START_GAME = 2
-    START_ROUND = 3
-    END_ROUND = 4
-    END_GAME = 5
+    INIT = 1
+    DISTRIBUTE = 2
+    START_GAME = 3
+    START_ROUND = 4
+    END_ROUND = 5
+    END_GAME = 6
 
 class Game(metaclass=abc.ABCMeta):
     """
@@ -20,6 +20,14 @@ class Game(metaclass=abc.ABCMeta):
 
     players: list[CardPlayer]
     cards_set: CardsSet
+    dict_orders = {
+        StateGame.INIT: lambda x: x.init,
+        StateGame.DISTRIBUTE: lambda x: x.distribute,
+        StateGame.START_GAME: lambda x: x.start_game,
+        StateGame.START_ROUND: lambda x: x.start_round,
+        StateGame.END_ROUND: lambda x: x.end_round,
+        StateGame.END_GAME: lambda x: x.end_game
+    }
 
     def __init__(self, type_of_game:TypeCard, players:list, cards_pack_count:int=1):
 
@@ -30,6 +38,17 @@ class Game(metaclass=abc.ABCMeta):
     @property
     def number_of_players(self):
         return len(self.players)
+
+    def next_step(self):
+        self._state_game += 1
+
+    def stop_iter():
+        raise StopIteration
+
+    def init(self, raise_stop_function=stop_iter, **kargs):
+        print("Initialisation")
+        # next state
+        self._state_game += 1
 
     def _check_distribution(self, number_by_user):
         """
@@ -51,7 +70,7 @@ class Game(metaclass=abc.ABCMeta):
         if len(self.cards_set.cards) < number_by_user * self.number_of_players:
             raise Exception("So more players for number of cards")
 
-    def distribute(self, number_by_user=-1):
+    def distribute(self, raise_stop_function=stop_iter, number_by_user=-1):
         """Distribution of cards
 
            Args:
@@ -60,82 +79,62 @@ class Game(metaclass=abc.ABCMeta):
            Returns:
              - None
         """
+        print("Distribution")
         self._check_distribution(number_by_user)
         
         if number_by_user < 0:
             number_by_user = len(self.cards_set.cards) // self.number_of_players
 
         for pl in self.players:
-            pl.get_cards(CardSetPlayer(cards = [self.cards_set.cards.pop() for _ in range(number_by_user)], game_type = type(self).__name__))
+            cards = [self.cards_set.cards.pop() for _ in range(number_by_user)]
+            csp = CardSetPlayer(cards=cards,
+                                game_type=type(self).__name__)
+            pl.get_cards(csp)
 
+        self.next_step()
         return
 
-    def start_game(self):
-        self.distribute()
+    def start_game(self, raise_stop_function=stop_iter, **kargs):
+        print("Start game")
+        self.next_step()
 
-    def end_game(self):
-        raise NotImplemented
+    def end_game(self, raise_stop_function=stop_iter, **kargs):
+        # start new round if not finished
+        if self.has_next_round():
+            self._state_game = StateGame.START_ROUND
+        # init state if finished
+        else:
+            print("End game")
+            self._state_game = 0
+            raise_stop_function()
 
-    def start_round(self):
-        raise NotImplemented
+    def start_round(self, raise_stop_function=stop_iter, **kargs):
+        print("Start round")
+        self.next_round(raise_stop_function)
+        self.next_step()
 
-    def end_round(self):
-        raise NotImplemented
-
-    def stop_iter():
-        raise StopIteration
+    def end_round(self, raise_stop_function=stop_iter, **kargs):
+        self._state_game = StateGame.START_ROUND \
+                           if self.has_next_round() \
+                           else StateGame.END_GAME
     
-    def __next__(self, raise_stop_function=stop_iter):
+    def __next__(self, raise_stop_function=stop_iter, **kargs):
         """
         Based on machine state, execute next order
         """
         print(f"Machine Status: {self._state_game}")
-        if self._state_game == StateGame.INIT:
-            print("Initialisation")
-            # next state
-            self._state_game += 1
-
-        elif self._state_game == StateGame.DISTRIBUTION:
-            print("Distribution")
-            self.distribute()
-            # next state
-            self._state_game += 1
-
-        elif self._state_game == StateGame.START_GAME:
-            print("Start game")
-            # next state
-            self._state_game += 1
-
-        elif self._state_game == StateGame.START_ROUND:
-            print("Start round")
-            self.next_round(raise_stop_function)
-            # next state
-            self._state_game += 1
-
-        elif self._state_game == StateGame.END_ROUND:
-            print("End round")
-            # next state
-            self._state_game = StateGame.START_ROUND if self.has_next_round() else StateGame.END_GAME
-
-        elif self._state_game == StateGame.END_GAME:
-            # start new round if not finished
-            if self.has_next_round():
-                self._state_game = StateGame.START_ROUND
-            # init state if finished
-            else:
-                print("End game")
-                self._state_game = 0
-                raise_stop_function()
+        #get callable function
+        func = Game.dict_orders[self._state_game](self)
+        func(raise_stop_function, **kargs)
 
     @abc.abstractmethod
     def next_round(self, raise_stop_function=None):
-        pass
+        self.next_step()
 
     @abc.abstractmethod
-    def has_next_round(self):
-        pass
+    def has_next_round(self) -> bool:
+        return False
 
     @classmethod
     def rules(cls):
         raise Exception(f"Please, define rules for {cls.__name__} game")
-

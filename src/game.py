@@ -21,41 +21,44 @@ if __name__ == "__main__":
     # define 3 players for test
     # create a battle game for test
     players = [CardPlayer(f"Player {i}") for i in range(1, 41)]
+    games = []
 
     # battle part 2 persons with 54 cards
-    battle_2p_54c = Battle(TypeCard.C_54, players[0:2])
-    next(battle_2p_54c)
-    next(battle_2p_54c)
-    next(battle_2p_54c)
-    for _ in range(3000):
-        next(battle_2p_54c)
-    next(battle_2p_54c)
+    games.append(Battle(TypeCard.C_54, players[0:2]))
 
     # battle part 3 persons with 54 cards
-    battle_3p_54c = Battle(TypeCard.C_54, players[2:5])
+    games.append(Battle(TypeCard.C_54, players[2:5]))
 
     # battle part 3 persons with 32 cards
-    battle_3p_32c = Battle(TypeCard.C_32, players[5:8])
+    games.append(Battle(TypeCard.C_32, players[5:8]))
 
     # battle part 8 persons with 32 cards
-    battle_8p_32c = Battle(TypeCard.C_32, players[8:16])
+    games.append(Battle(TypeCard.C_32, players[8:16]))
 
     # pocker 3 persons with 1 pack
-    pocker_3p_1p = Pocker(players[16:20], cards_pack_count = 1)
+    games.append(Pocker(players[16:20], cards_pack_count = 1))
 
     # pocker 15 persons with 2 packs // Exception
     # pocker_15p_2p = Pocker(players[20:35], cards_pack_count = 1)
 
     # pocker 15 persons with 8 packs // Exception
-    pocker_10p_4p = Pocker(players[20:30], cards_pack_count = 4)
+    games.append(Pocker(players[20:30], cards_pack_count = 4))
 
     # Tarot 6 persons // Exception
     #tarot_6p = Tarot(players[30:36])
 
     # Tarot 5 persons
-    tarot_5p = Tarot(players[30:35])
+    games.append(Tarot(players[30:35]))
 
     # tests
-    for player in players[0:2]:
-        print(player)
+    def test(game_number):
+        while True:
+            try:
+                next(games[game_number])
+            except StopIteration:
+                break
 
+        for player in games[game_number].players:
+            print(player)
+
+    test(1)

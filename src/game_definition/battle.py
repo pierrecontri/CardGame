@@ -23,19 +23,22 @@ class Battle(base.Game):
 
     def next_round(self, raise_stop_function=None):
         print("Play")
-        cards_round = battle_rules.play_round(players = self.players, is_blindly = True)
+        # get players who have cards
+        ready_players = [pl for pl in self.players if len(pl.cards)]
+        cards_round = battle_rules.play_round(players = ready_players, \
+                                              is_blindly = True)
 
     def has_next_round(self):
         return battle_rules.has_next_round(self.players)
 
-    def start_game(self):
-        raise NotImplemented
+    #def start_game(self):
+    #    raise NotImplemented
 
-    def end_game(self):
-        raise NotImplemented
+    #def end_game(self):
+    #    raise NotImplemented
 
-    def start_round(self):
-        raise NotImplemented
+    #def start_round(self):
+    #    raise NotImplemented
 
-    def end_round(self):
-        raise NotImplemented
+    #def end_round(self):
+    #    raise NotImplemented

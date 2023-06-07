@@ -1,7 +1,7 @@
 """Rules for Battle"""
 from card_player import CardPlayer
 
-def has_next_round(players):
+def has_next_round(players:list) -> bool:
     """
     Check if there is another round
     To run another round, minimum of 2 players contains cards
@@ -10,13 +10,16 @@ def has_next_round(players):
     print(f"sum player with cards: {number_of_players_with_cards}")
     return number_of_players_with_cards > 1
 
+def get_winner(players:list):
+    return [pl for pl in self.players if len(pl.cards)].pop()
+
 def play_round(players, is_blindly=True):
     """
     Each player pull a card on his cards set
     Depends of the Battle_type (blindly or not)
     """
     if is_blindly:
-        cards_round = [{'player': pl, 'card': pl.cards.pop()} for pl in players]
+        cards_round = [{'player': pl, 'card': pl.cards.pop()} for pl in players] # if len(pl.cards)]
         print(cards_round)
         list_sorted = sorted(cards_round, key = lambda x: x['card'], reverse = True)
         print(list_sorted)

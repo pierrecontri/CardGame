@@ -61,21 +61,35 @@ class CardSetPlayer(list):
             self._game_type = game_type
     
 class CardsSet(object):
-    """This class is the representation of a clomplete card game.
-    By default, there is 32 card, but yes can change it to 54 or Taro game"""
+    """
+    This class is the representation of a clomplete card game.
+    By default, there is 32 card,
+    but yes can change it to 54 or Taro game
+    """
 
     dict_values_card = {
-        TypeCard.C_32: ["A", "K", "Q", "V", "10", "9", "8", "7"],
-        TypeCard.C_54: ["K", "Q", "V", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"],
-        TypeCard.TAROT: ["K", "Q", "C", "V", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"]
+        TypeCard.C_32: [
+            "A", "K", "Q", "V", "10", "9", "8", "7"
+        ],
+        TypeCard.C_54: [
+            "K", "Q", "V", "10", "9", "8", "7", "6",
+            "5", "4", "3", "2", "1"
+        ],
+        TypeCard.TAROT: [
+            "K", "Q", "C", "V", "10", "9", "8", "7",
+            "6", "5", "4", "3", "2", "1"
+        ]
     }
     
-    def __init__(self, type_card:TypeCard=TypeCard.C_32, shuffle_cards:bool=True, cards_pack_count:int=1):
+    def __init__(self, type_card:TypeCard=TypeCard.C_32, 
+                 shuffle_cards:bool=True, cards_pack_count:int=1):
 
         self._type_card = type_card
         self._colors = list(chr(col) for col in range(3, 7, 1))
         self._values = CardsSet.dict_values_card[self._type_card]
-        self._trumps = None if self._type_card != TypeCard.TAROT else list(range(1, 21, 1)) # 21 trumps
+        self._trumps = None \
+                       if self._type_card != TypeCard.TAROT \
+                       else list(range(1, 21, 1)) # 21 trumps
         elements = itertools.product(self._colors, self._values)
         self._cards = [Card(*elem) for elem in elements] * cards_pack_count
 

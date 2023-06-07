@@ -37,7 +37,8 @@ class CardPlayer(object):
     def __str__(self):
         str_cards = ", ".join([str(elem) for elem in self._cards])
         return f"I'm {self.name}, " + \
-               (f"I play {self._cards.game_type} and here is my game: [{str_cards}]" \
+               (f"I play {self._cards.game_type}" + \
+                f" and here is my game: [{str_cards}]" \
                if str_cards else "I'm waiting for play")
 
     @classmethod

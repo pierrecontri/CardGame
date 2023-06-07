@@ -15,16 +15,20 @@ class Pocker(base.Game):
     def __init__(self, players: list, cards_pack_count: int=1):
         super().__init__(TypeCard.C_32, players, cards_pack_count)
         self.round_number = 0
+
+    def stop_iter():
+        raise StopIteration
     
-    def distribute(self):
-        super().distribute(Pocker.number_cards_in_hands)
+    def distribute(self, raise_stop_function=stop_iter):
+        super().distribute(raise_stop_function=raise_stop_function,
+                           number_by_user=Pocker.number_cards_in_hands)
         
     @classmethod
     def rules(cls):
         """Define the rules for Pocker"""
         pass
 
-    def next_round(self):
+    def next_round(self, raise_stop_function=stop_iter):
         self.round_number += 1
 
     def has_next_round(self):
