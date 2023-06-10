@@ -25,7 +25,7 @@ class Battle(base.Game):
         print("Play")
         # get players who have cards
         ready_players = [pl for pl in self.players if len(pl.cards)]
-        cards_round = battle_rules.play_round(players = ready_players, \
+        cards_round = battle_rules.play_round(players = ready_players,
                                               is_blindly = True)
 
     def has_next_round(self):

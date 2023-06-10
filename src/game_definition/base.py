@@ -29,10 +29,14 @@ class Game(metaclass=abc.ABCMeta):
         StateGame.END_GAME: lambda x: x.end_game
     }
 
-    def __init__(self, type_of_game:TypeCard, players:list, cards_pack_count:int=1):
+    def __init__(self,
+                 type_of_game:TypeCard,
+                 players:list,
+                 cards_pack_count:int=1):
 
         self.players = players
-        self.cards_set = CardsSet(type_card = type_of_game, cards_pack_count = cards_pack_count)
+        self.cards_set = CardsSet(type_card = type_of_game,
+                                  cards_pack_count = cards_pack_count)
         self._state_game = StateGame.INIT
         
     @property

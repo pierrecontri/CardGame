@@ -6,6 +6,9 @@ from game_definition.tarot import Tarot
 from game_definition.pocker import Pocker
 from game_definition.battle import Battle
 
+import concurrent.futures as cf
+import multiprocessing
+
 __Title__ = """
 ---..------..------..------.     .------..------..------..------.
 |C.--. ||A.--. ||R.--. ||D.--. |.-.  |G.--. ||A.--. ||M.--. ||E.--. |
@@ -51,14 +54,33 @@ if __name__ == "__main__":
     games.append(Tarot(players[30:35]))
 
     # tests
-    def test(game_number):
+    def test(tmp_game):
+
         while True:
             try:
-                next(games[game_number])
+                next(tmp_game)
             except StopIteration:
+                return 
+            except Exception as err:
+                print("Error unmanaged : " + repr(err))
                 break
 
-        for player in games[game_number].players:
+        for player in tmp_game.players:
             print(player)
 
-    test(1)
+    #test(games[1])
+
+    with cf.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
+    
+        future_to_game = \
+            {executor.submit(test, tmp_game): tmp_game for tmp_game in games}
+
+        # get results
+        for future in cf.as_completed(future_to_game):
+            data = future_to_game[future]
+            try:
+                data = future.result()
+            except Exception as exc:
+                print('%r generated an exception: %s' % (game, exc))
+            else:
+                print(f"Execution ended for ThreadPool: {future}")
