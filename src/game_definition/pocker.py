@@ -22,7 +22,7 @@ class Pocker(base.Game):
     def distribute(self, raise_stop_function=stop_iter):
         super().distribute(raise_stop_function=raise_stop_function,
                            number_by_user=Pocker.number_cards_in_hands)
-        
+
     @classmethod
     def rules(cls):
         """Define the rules for Pocker"""
@@ -34,3 +34,5 @@ class Pocker(base.Game):
     def has_next_round(self):
         return self.round_number < 2
 
+    def get_winner(self):
+        raise NotImplementedError

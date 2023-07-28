@@ -44,21 +44,24 @@ class Card:
     def __ge__(self, other):
         return self.value >= other.value
 
-class CardSetPlayer(list):
-    """This class is the representation of a card set for each gamer"""
+# class CardSetPlayer(list):
+    # """This class is the representation of a card set for each gamer"""
 
-    def __init__(self, cards=[], game_type=None):
-        super().__init__(cards)
-        self._game_type = game_type
+    # def __init__(self, cards=[], game_type=None):
+        # super().__init__(cards)
+        # self._game_type = game_type
 
-    @property
-    def game_type(self):
-        return self._game_type
+    # def reset():
+        # pass
+
+    # @property
+    # def game_type(self):
+        # return self._game_type
     
-    @game_type.setter
-    def game_type(self, game_type):
-        if game_type != None:
-            self._game_type = game_type
+    # @game_type.setter
+    # def game_type(self, game_type):
+        # if game_type != None:
+            # self._game_type = game_type
     
 class CardsSet(object):
     """
@@ -85,15 +88,20 @@ class CardsSet(object):
                  shuffle_cards:bool=True, cards_pack_count:int=1):
 
         self._type_card = type_card
+        self._shuffle_cards = shuffle_cards
+        self._cards_pack_count = cards_pack_count
+        self.reset()
+
+    def reset(self):
         self._colors = list(chr(col) for col in range(3, 7, 1))
         self._values = CardsSet.dict_values_card[self._type_card]
         self._trumps = None \
                        if self._type_card != TypeCard.TAROT \
                        else list(range(1, 21, 1)) # 21 trumps
         elements = itertools.product(self._colors, self._values)
-        self._cards = [Card(*elem) for elem in elements] * cards_pack_count
+        self._cards = [Card(*elem) for elem in elements] * self._cards_pack_count
 
-        if shuffle_cards:
+        if self._shuffle_cards:
             self.shuffle_it()
 
     def __iter__(self):

@@ -7,7 +7,7 @@ class CardPlayer(object):
     He has a card set
     He define the game he play for
     """
-    _cards: CardSetPlayer
+    _cards: list
     _game_type: str
     
     def __init__(self, name, game_type=None):
@@ -15,7 +15,12 @@ class CardPlayer(object):
         The player name must be defined at the creation
         """
         self.name = name
-        self._cards = CardSetPlayer(game_type = game_type)
+        self._cards = []
+        self.game_type = game_type
+
+    def reset(self):
+        self._cards = []
+        self.game_type = None
 
     def play_next(self):
         pass
@@ -24,6 +29,8 @@ class CardPlayer(object):
         pass
     
     def get_cards(self, cards: list) -> None:
+        #shuffle new cards
+        rnd.shuffle(cards)
         self._cards += cards
 
     @property
@@ -37,7 +44,7 @@ class CardPlayer(object):
     def __str__(self):
         str_cards = ", ".join([str(elem) for elem in self._cards])
         return f"I'm {self.name}, " + \
-               (f"I play {self._cards.game_type}" + \
+               (f"I play {self.game_type}" + \
                 f" and here is my game: [{str_cards}]" \
                if str_cards else "I'm waiting for play")
 
@@ -46,16 +53,11 @@ class CardPlayer(object):
         cards, player = elem
         player.get_cards(cards)
 
-    @classmethod
-    def has_no_card(cls, player) -> bool:
-        return not(player.number_of_cards)
-    
-    @staticmethod
-    def has_card(player) -> bool:
-        return bool(player.number_of_cards)
+    def has_card(self) -> bool:
+        return bool(self.number_of_cards)
 
-    @classmethod
-    def define_game(cls, game_type):
-        def define_it(player):
-            player.cards.game_type = game_type
-        return define_it
+    #@classmethod
+    #def define_game(cls, game_type):
+    #    def define_it(player):
+    #        player.cards.game_type = game_type
+    #    return define_it

@@ -54,33 +54,42 @@ if __name__ == "__main__":
     games.append(Tarot(players[30:35]))
 
     # tests
-    def test(tmp_game):
-
+    def test(tmp_game, print_at_end=True):
         while True:
             try:
                 next(tmp_game)
             except StopIteration:
-                return 
+                break 
             except Exception as err:
                 print("Error unmanaged : " + repr(err))
                 break
 
+        if not print_at_end:
+            return
+
         for player in tmp_game.players:
             print(player)
 
-    #test(games[1])
+    test(games[1])
+    print(games[1].winner)
 
-    with cf.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
+    for _ in range(100):
+        games[1].reset()
+        test(games[1], False)
+        print(games[1].winner)
+
+
+    # with cf.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
     
-        future_to_game = \
-            {executor.submit(test, tmp_game): tmp_game for tmp_game in games}
+        # future_to_game = \
+            # {executor.submit(test, tmp_game): tmp_game for tmp_game in games}
 
-        # get results
-        for future in cf.as_completed(future_to_game):
-            data = future_to_game[future]
-            try:
-                data = future.result()
-            except Exception as exc:
-                print('%r generated an exception: %s' % (game, exc))
-            else:
-                print(f"Execution ended for ThreadPool: {future}")
+        # # get results
+        # for future in cf.as_completed(future_to_game):
+            # data = future_to_game[future]
+            # try:
+                # data = future.result()
+            # except Exception as exc:
+                # print('%r generated an exception: %s' % (game, exc))
+            # else:
+                # print(f"Execution ended for ThreadPool: {future}")

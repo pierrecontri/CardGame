@@ -1,7 +1,7 @@
 import abc
 from enum import IntEnum
 from card_player import CardPlayer
-from cards_definition import CardsSet, CardSetPlayer, TypeCard
+from cards_definition import CardsSet, TypeCard
 
 class StateGame(IntEnum):
     INIT = 1
@@ -35,13 +35,27 @@ class Game(metaclass=abc.ABCMeta):
                  cards_pack_count:int=1):
 
         self.players = players
-        self.cards_set = CardsSet(type_card = type_of_game,
-                                  cards_pack_count = cards_pack_count)
+        self._type_of_game = type_of_game
+        self._cards_pack_count = cards_pack_count
+
+        self.reset()
+
+    def reset(self):
+        # reset players
+        for pl in self.players:
+            pl.reset()
+        # reset the CardsSet
+        self.cards_set = CardsSet(type_card = self._type_of_game,
+                                  cards_pack_count = self._cards_pack_count)
         self._state_game = StateGame.INIT
-        
+
     @property
     def number_of_players(self):
         return len(self.players)
+
+    @property
+    def winner(self):
+        return self.get_winner().name
 
     def next_step(self):
         self._state_game += 1
@@ -50,7 +64,7 @@ class Game(metaclass=abc.ABCMeta):
         raise StopIteration
 
     def init(self, raise_stop_function=stop_iter, **kargs):
-        print("Initialisation")
+        #print("Initialisation")
         # next state
         self._state_game += 1
 
@@ -83,7 +97,7 @@ class Game(metaclass=abc.ABCMeta):
            Returns:
              - None
         """
-        print("Distribution")
+        #print("Distribution")
         self._check_distribution(number_by_user)
         
         if number_by_user < 0:
@@ -91,15 +105,14 @@ class Game(metaclass=abc.ABCMeta):
 
         for pl in self.players:
             cards = [self.cards_set.cards.pop() for _ in range(number_by_user)]
-            csp = CardSetPlayer(cards=cards,
-                                game_type=type(self).__name__)
-            pl.get_cards(csp)
+            pl.get_cards(cards)
+            pl.game_type = type(self).__name__
 
         self.next_step()
         return
 
     def start_game(self, raise_stop_function=stop_iter, **kargs):
-        print("Start game")
+        #print("Start game")
         self.next_step()
 
     def end_game(self, raise_stop_function=stop_iter, **kargs):
@@ -108,12 +121,12 @@ class Game(metaclass=abc.ABCMeta):
             self._state_game = StateGame.START_ROUND
         # init state if finished
         else:
-            print("End game")
+            #print("End game")
             self._state_game = 0
             raise_stop_function()
 
     def start_round(self, raise_stop_function=stop_iter, **kargs):
-        print("Start round")
+        #print("Start round")
         self.next_round(raise_stop_function)
         self.next_step()
 
@@ -126,10 +139,14 @@ class Game(metaclass=abc.ABCMeta):
         """
         Based on machine state, execute next order
         """
-        print(f"Machine Status: {self._state_game}")
-        #get callable function
+        #print(f"Machine Status: {self._state_game}")
+        # get callable function
         func = Game.dict_orders[self._state_game](self)
+        # execute callable
         func(raise_stop_function, **kargs)
+
+    @abc.abstractmethod
+    def get_winner(self): ...
 
     @abc.abstractmethod
     def next_round(self, raise_stop_function=None):

@@ -37,3 +37,6 @@ class Tarot(base.Game):
 
     def has_next_round(self):
         return False
+
+    def get_winner(self):
+        raise NotImplementedError

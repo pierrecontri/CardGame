@@ -15,14 +15,8 @@ class Battle(base.Game):
         """Define the rules for Battle"""
         pass
 
-    def get_round():
-        pass
-
-    def count_round():
-        pass
-
     def next_round(self, raise_stop_function=None):
-        print("Play")
+        #print("Play")
         # get players who have cards
         ready_players = [pl for pl in self.players if len(pl.cards)]
         cards_round = battle_rules.play_round(players = ready_players,
@@ -30,6 +24,9 @@ class Battle(base.Game):
 
     def has_next_round(self):
         return battle_rules.has_next_round(self.players)
+
+    def get_winner(self):
+        return battle_rules.get_winner(self.players)
 
     #def start_game(self):
     #    raise NotImplemented
