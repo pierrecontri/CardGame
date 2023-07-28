@@ -1,7 +1,7 @@
 import abc
 from enum import IntEnum
-from card_player import CardPlayer
 from cards_definition import CardsSet, TypeCard
+from card_player import CardPlayer
 
 class StateGame(IntEnum):
     INIT = 1

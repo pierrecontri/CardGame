@@ -43,25 +43,6 @@ class Card:
 
     def __ge__(self, other):
         return self.value >= other.value
-
-# class CardSetPlayer(list):
-    # """This class is the representation of a card set for each gamer"""
-
-    # def __init__(self, cards=[], game_type=None):
-        # super().__init__(cards)
-        # self._game_type = game_type
-
-    # def reset():
-        # pass
-
-    # @property
-    # def game_type(self):
-        # return self._game_type
-    
-    # @game_type.setter
-    # def game_type(self, game_type):
-        # if game_type != None:
-            # self._game_type = game_type
     
 class CardsSet(object):
     """

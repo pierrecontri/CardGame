@@ -1,6 +1,7 @@
 # Game definition for Tarot
 
-from card_player import *
+from card_player import CardPlayer
+from cards_definition import TypeCard
 from . import base
 from rules import tarot as tarot_rules
 

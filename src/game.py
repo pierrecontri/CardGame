@@ -1,3 +1,4 @@
+from collections import Counter
 
 from cards_definition import TypeCard
 from card_player import CardPlayer
@@ -10,7 +11,7 @@ import concurrent.futures as cf
 import multiprocessing
 
 __Title__ = """
----..------..------..------.     .------..------..------..------.
+.------..------..------..------.     .------..------..------..------.
 |C.--. ||A.--. ||R.--. ||D.--. |.-.  |G.--. ||A.--. ||M.--. ||E.--. |
 | :/\: || (\/) || :(): || :/\: ((5)) | :/\: || (\/) || (\/) || (\/) |
 | :\/: || :\/: || ()() || (__) |'-.-.| :\/: || :\/: || :\/: || :\/: |
@@ -73,11 +74,16 @@ if __name__ == "__main__":
     test(games[1])
     print(games[1].winner)
 
+    list_winners = []
     for _ in range(100):
         games[1].reset()
         test(games[1], False)
-        print(games[1].winner)
+        tmp_win = games[1].winner
+        list_winners.append(tmp_win)
+        print(tmp_win)
 
+    c = Counter(list_winners)
+    print(c)
 
     # with cf.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
     

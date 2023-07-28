@@ -1,5 +1,5 @@
 # card player
-from cards_definition import *
+import random as rnd
 
 class CardPlayer(object):
     """
@@ -27,7 +27,7 @@ class CardPlayer(object):
 
     def play_round(self):
         pass
-    
+
     def get_cards(self, cards: list) -> None:
         #shuffle new cards
         rnd.shuffle(cards)
@@ -55,9 +55,3 @@ class CardPlayer(object):
 
     def has_card(self) -> bool:
         return bool(self.number_of_cards)
-
-    #@classmethod
-    #def define_game(cls, game_type):
-    #    def define_it(player):
-    #        player.cards.game_type = game_type
-    #    return define_it
