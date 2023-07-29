@@ -86,11 +86,7 @@ class CardsSet(object):
             self.shuffle_it()
 
     def __iter__(self):
-        return iter(self._cards)
-
-    def __repr__(self):
-        for elem in self._cards:
-            yield elem
+        yield from self._cards
 
     def __str__(self):
         return ", ".join([str(elem) for elem in self._cards])
@@ -103,7 +99,7 @@ class CardsSet(object):
         return self._cards
 
     def __len__(self):
-        return len(self.cards)
+        return len(self._cards)
 
     @property
     def trumps(self):

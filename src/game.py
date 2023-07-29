@@ -65,37 +65,36 @@ if __name__ == "__main__":
                 print("Error unmanaged : " + repr(err))
                 break
 
-        if not print_at_end:
-            return
+        if print_at_end:
+            for player in tmp_game.players:
+                print(player)
+            
+        return tmp_game.winner
 
-        for player in tmp_game.players:
-            print(player)
+    # tmp_win = test(games[1])
+    # print(tmp_win)
 
-    test(games[1])
-    print(games[1].winner)
+    # list_winners = []
+    # for _ in range(100):
+        # games[1].reset()
+        # list_winners.append(test(games[1], False))
+        # print(list_winners[-1])
 
-    list_winners = []
-    for _ in range(100):
-        games[1].reset()
-        test(games[1], False)
-        tmp_win = games[1].winner
-        list_winners.append(tmp_win)
-        print(tmp_win)
+    # c = Counter(list_winners)
+    # print(c)
 
-    c = Counter(list_winners)
-    print(c)
-
-    # with cf.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
+    with cf.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
     
-        # future_to_game = \
-            # {executor.submit(test, tmp_game): tmp_game for tmp_game in games}
+        future_to_game = \
+            {executor.submit(test, tmp_game): tmp_game for tmp_game in games}
 
-        # # get results
-        # for future in cf.as_completed(future_to_game):
-            # data = future_to_game[future]
-            # try:
-                # data = future.result()
-            # except Exception as exc:
-                # print('%r generated an exception: %s' % (game, exc))
-            # else:
-                # print(f"Execution ended for ThreadPool: {future}")
+        # get results
+        for future in cf.as_completed(future_to_game):
+            data = future_to_game[future]
+            try:
+                data = future.result()
+                print(f"Winner : {data}")
+            except Exception as exc:
+                print('%r generated an exception: %s' % (future, exc))
+            else:
+                print(f"Execution ended for ThreadPool: {future}")
