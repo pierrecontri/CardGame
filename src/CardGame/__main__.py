@@ -1,11 +1,11 @@
 from collections import Counter
 
-from cards_definition import TypeCard
-from card_player import CardPlayer
+from .cards_definition import TypeCard
+from .card_player import CardPlayer
 
-from game_definition.tarot import Tarot
-from game_definition.pocker import Pocker
-from game_definition.battle import Battle
+from .game_definition.tarot import Tarot
+from .game_definition.pocker import Pocker
+from .game_definition.battle import Battle
 
 import concurrent.futures as cf
 import multiprocessing

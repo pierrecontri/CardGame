@@ -1,5 +1,5 @@
 """Rules for Battle"""
-from card_player import CardPlayer
+from ..card_player import CardPlayer
 
 def has_next_round(players:list) -> bool:
     """

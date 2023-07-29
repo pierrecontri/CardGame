@@ -1,9 +1,9 @@
 # Game definition for Pocker
 
-from card_player import CardPlayer
-from cards_definition import TypeCard
 from . import base
-from rules import pocker as pocker_rules
+from ..card_player import CardPlayer
+from ..cards_definition import TypeCard
+from ..rules import pocker as pocker_rules
 
 class Pocker(base.Game):
     """Traditionnal pocker

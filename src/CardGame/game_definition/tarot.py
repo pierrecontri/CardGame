@@ -1,9 +1,9 @@
 # Game definition for Tarot
 
-from card_player import CardPlayer
-from cards_definition import TypeCard
 from . import base
-from rules import tarot as tarot_rules
+from ..card_player import CardPlayer
+from ..cards_definition import TypeCard
+from ..rules import tarot as tarot_rules
 
 class Tarot(base.Game):
     """Define Tarot game"""
