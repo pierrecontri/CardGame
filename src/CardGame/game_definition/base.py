@@ -1,4 +1,5 @@
 import abc
+import importlib
 from enum import IntEnum
 from ..cards_definition import CardsSet, TypeCard
 from ..card_player import CardPlayer
@@ -32,7 +33,14 @@ class Game(metaclass=abc.ABCMeta):
     def __init__(self,
                  type_of_game:TypeCard,
                  players:list,
+                 rules_mod,
                  cards_pack_count:int=1):
+
+        if rules_mod:
+            self.game_rules = rules_mod
+            self.game_rules = importlib.import_module(
+                                   name=self.game_rules.__name__,
+                                   package=self.game_rules.__package__)
 
         self.players = players
         self._type_of_game = type_of_game
@@ -145,8 +153,9 @@ class Game(metaclass=abc.ABCMeta):
         # execute callable
         func(raise_stop_function, **kargs)
 
-    @abc.abstractmethod
-    def get_winner(self): ...
+    #@abc.abstractmethod
+    def get_winner(self):
+        return self.game_rules.get_winner(self.players)
 
     @abc.abstractmethod
     def next_round(self, raise_stop_function=None):

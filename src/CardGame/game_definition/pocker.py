@@ -3,7 +3,7 @@
 from . import base
 from ..card_player import CardPlayer
 from ..cards_definition import TypeCard
-from ..rules import pocker as pocker_rules
+from ..rules import pocker as game_rules
 
 class Pocker(base.Game):
     """Traditionnal pocker
@@ -14,7 +14,7 @@ class Pocker(base.Game):
     number_cards_in_hands = 5
     
     def __init__(self, players: list, cards_pack_count: int=1):
-        super().__init__(TypeCard.C_32, players, cards_pack_count)
+        super().__init__(TypeCard.C_32, players, game_rules, cards_pack_count)
         self.round_number = 0
 
     def stop_iter():

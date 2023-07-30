@@ -3,12 +3,14 @@
 from . import base
 from ..card_player import CardPlayer
 from ..cards_definition import TypeCard
-from ..rules import tarot as tarot_rules
+from ..rules import tarot as game_rules
 
 class Tarot(base.Game):
     """Define Tarot game"""
     def __init__(self, players:list):
-        super().__init__(type_of_game=TypeCard.TAROT, players=players)
+        super().__init__(type_of_game=TypeCard.TAROT,
+                         players=players,
+                         rules_mod=game_rules)
 
     def _check_distribution(self, number_by_user):
         """
